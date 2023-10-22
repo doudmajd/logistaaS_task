@@ -1,0 +1,56 @@
+<h1 class="my-4">Books</h1>
+<% if author_signed_in? %>
+  <%= link_to 'New Book', new_book_path, class: 'btn btn-primary mb-4' %>
+  <%= form_tag d_download_csv_books_path(format: :csv), method: :get, id: 'download-csv-form' do %>
+    <%= button_tag 'Download CSV', type: 'submit', class: 'btn btn-primary' %>
+  <% end %>
+<% end %>
+<%= form_for_filterrific @filterrific, html: { method: :get } do |f| %>
+  <div class="form-row mb-3">
+    <div class="col">
+      <%= f.label :filter_by_author_name, "Author Name" %>
+      <%= f.text_field :filter_by_author_name, class: 'form-control' %>
+    </div>
+    <div class="col">
+      <%= f.label :search_by_name, "Book Name" %>
+      <%= f.text_field :search_by_name, class: 'form-control' %>
+    </div>
+    <div class="col">
+      <%= f.label :filter_by_release_date %>
+      <%= f.date_field :filter_by_release_date, class: 'form-control', type: 'date' %>
+    </div>
+    <div class="col">
+      <%= f.submit "Apply Filters", class: 'btn btn-primary' %>
+    </div>
+    <div class="col-md-6 m-2">
+      <div class="form-group">
+        <%= link_to "Reset Filter", reset_filterrific_url, class: 'btn btn-link' %>
+      </div>
+    </div>
+  </div>
+<% end %>
+<table class="table table-bordered">
+  <thead>
+    <tr>
+      <th>Author Name</th>
+      <th>Name</th>
+      <th>Release Date</th>
+      <th>Actions</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @books.each do |book| %>
+      <tr>
+        <td><%= book.author.name %></td>
+        <!-- Access the author's name through the association -->
+        <td><%= book.name %></td>
+        <td><%= book.release_date %></td>
+        <td class="btn-group" role="group">
+          <%= button_to 'Edit', edit_book_path(book), method: :get, class: 'btn btn-warning' %>
+          <%= button_to 'Delete', book, method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn btn-danger' %>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+<%= link_to 'Back', authors_path, class: 'btn btn-secondary' %>

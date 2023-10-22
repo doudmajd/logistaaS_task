@@ -1,0 +1,10 @@
+<h1 class="my-4"><%= @author.name %>'s Books</h1>
+<% @books.each do |book| %>
+  <div class="card mb-4">
+    <div class="card-body">
+      <h5 class="card-title"><strong>Name:</strong> <%= book.name %></h5>
+      <p class="card-text"><strong>Release Date:</strong> <%= book.release_date %></p>
+    </div>
+  </div>
+<% end %>
+<%= link_to 'Back', authors_path, class: 'btn btn-secondary' %>
